@@ -7,7 +7,17 @@
 	<body>
 		<div id="app" >
 			<input type="text" v-on:input="onInputKeyup" >
-			<p>{{ title }}</p>
+			<h1>{{ title }}</h1>
+			<p>{{ spitTitle() }}</p>
+			<p v-html="finishedLink"></p>
+			<div>
+				<a v-bind:href="link" target="_blank">Google</a>
+			</div>
+
+			<hr>
+			<div>
+				<img v-bind:src="hackerman" />
+			</div>
 		</div>
 
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -16,12 +26,19 @@
 				el: "#app",
 
 				data: {
-					title: "Hello World"
+					title: "Hello World",
+					link: "http://google.com",
+					finishedLink: "<a href='http://google.com' target='_blank'>Google</a>",
+					hackerman: "https://media.giphy.com/media/QbumCX9HFFDQA/giphy-downsized-large.gif"
 				},
 
 				methods: {
 					onInputKeyup: function(event) {
 						this.title = event.target.value;
+					},
+					spitTitle: function() {
+						this.title = "Hello!";
+						return this.title;
 					}
 				}
 			});
