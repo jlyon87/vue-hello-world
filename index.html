@@ -5,7 +5,8 @@
 		<title></title>
 	</head>
 	<body>
-		<div id="app" class="">
+		<div id="app" >
+			<input type="text" v-on:input="onInputKeyup" >
 			<p>{{ title }}</p>
 		</div>
 
@@ -13,8 +14,15 @@
 		<script type="text/javascript">
 			new Vue({
 				el: "#app",
+
 				data: {
 					title: "Hello World"
+				},
+
+				methods: {
+					onInputKeyup: function(event) {
+						this.title = event.target.value;
+					}
 				}
 			});
 		</script>
