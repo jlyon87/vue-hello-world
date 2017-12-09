@@ -6,13 +6,13 @@
 	</head>
 	<body>
 		<div id="app" >
-			<button v-on:click="increase(2, $event)">Click me</button>
-			<p>{{ counter }}</p>
-			<p v-on:mousemove="updateCoordinates" >
-				Coordinates: {{ x }} / {{ y }}
-				- <span v-on:mousemove.stop="">DEAD SPOT</span>
-			</p>
-			<input type="text" v-on:keyup.enter.space="alertMe" >
+			<button v-on:click="counter++">Increase</button>
+			<button v-on:click="counter--">Decrease</button>
+			<button v-on:click="secondCounter++">Increase Second</button>
+
+			<p>{{ counter }} | {{ secondCounter }}</p>
+			<p>{{ result() }} | {{ output }}</p>
+
 		</div>
 
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -22,21 +22,29 @@
 
 				data: {
 					counter: 0,
-					x: 0,
-					y: 0
+					secondCounter: 0
+				},
+
+				computed: { // react to data changes, synchronous
+					output: function() { // only calculated when this.counter changes
+						console.log("computed");
+						return this.counter > 5 ? "Greater than 5" : "Less than 5";
+					}
+				},
+
+				watch: { // react to data changes, async
+					counter: function(value) {
+						var vm = this;
+						setTimeout(function() {
+							vm.counter = 0;
+						}, 2000);
+					}
 				},
 
 				methods: {
-					increase: function(step, event) {
-						console.log("Event: ", event);
-						this.counter += step;
-					},
-					updateCoordinates: function(event) {
-						this.x = event.clientX;
-						this.y = event.clientY;
-					},
-					alertMe: function() {
-						alert("Alert!");
+					result: function() { // fired every time vue redraws the page
+						console.log("method");
+						return this.counter > 5 ? "Greater than 5" : "Less than 5";
 					}
 				}
 			});
