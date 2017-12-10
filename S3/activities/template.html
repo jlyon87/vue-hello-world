@@ -10,6 +10,7 @@
 			<p v-if="show">You can see me! <span>Hello!</span></p>
 			<p v-else>Now you see me.</p>
 
+			<!-- Wrapping elements in template will group them without a parent element drawn. -->
 			<template v-if="show">
 				<h1>heading 1</h1>
 				<p>Inside a template</p>
