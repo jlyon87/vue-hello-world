@@ -5,48 +5,20 @@ new Vue({
 		isStarted: false,
 		player: {
 			hp: 100,
-			charge: 0,
-			attack: function() {
-				return Math.floor(Math.random() * (11 - 5) + 5);
-			},
-			special: function() {
-				return Math.floor(Math.random() * (20 - 10) + 10);
-			}
+			charge: 0
 		},
 		monster: {
-			hp: 100,
-			attack: function() {
-				return Math.floor(Math.random() * (7 - 3) + 3);
-			}
+			hp: 100
 		},
 		logs: []
 	},
 
 	computed: {
 		isSpecialReady: function() {
-			console.log("")
 			return this.player.charge < 3;
 		},
 		isHealReady: function() {
 			return this.player.charge < 2;
-		}
-	},
-
-	watch: {
-		"player.hp": function(value) {
-
-			if(this.player.hp < 1) {
-				alert("You Lost!");
-				this.isStarted = false;
-			}
-		},
-
-		"monster.hp": function() {
-
-			if(this.monster.hp < 1) {
-				alert("You Won!");
-				this.isStarted = false;
-			}
 		}
 	},
 
@@ -61,59 +33,77 @@ new Vue({
 
 		attack: function() {
 			this.player.charge++;
-			var playerAttack = this.player.attack();
-			var monsterAttack = this.monster.attack();
+			var playerAttack = this.randomNumber(11, 5);
+			var monsterAttack = this.randomNumber(12, 6);
 
 			this.monster.hp -= playerAttack;
 			this.player.hp -= monsterAttack;
 
-			this.logs.push({
-				message: "Monster hits Player for " + monsterAttack,
-				style: "alert"});
+			this.addLog("Monster hits Player for " + monsterAttack, "alert");
+			this.addLog("Player hits Monster for " + playerAttack, "primary");
 
-			this.logs.push({
-				message: "Player hits Monster for " + playerAttack,
-				style: "primary"});
+			this.checkWin();
 		},
 
 		specialAttack: function() {
 			this.player.charge -= 3;
-			var playerAttack = this.player.special();
-			var monsterAttack = this.monster.attack();
+			var playerAttack = this.randomNumber(20, 12);
+			var monsterAttack = this.randomNumber(12, 6);
 
 			this.monster.hp -= playerAttack;
 			this.player.hp -= monsterAttack;
 
-			this.logs.push({
-				message: "Monster hits Player for " + monsterAttack,
-				style: "alert"});
+			this.addLog("Monster hits Player for " + monsterAttack, "alert");
+			this.addLog("Player SMASHES Monster for " + playerAttack, "primary");
 
-			this.logs.push({
-				message: "Player SMASHES Monster for " + playerAttack,
-				style: "primary"});
+			this.checkWin();
 		},
 
 		heal: function() {
 			this.player.charge -= 2;
 
-			var healAmount = Math.floor(Math.random() * (7 - 3) + 3);
-			var monsterAttack = this.monster.attack();
+			var healAmount = this.randomNumber(15, 7);
+			var monsterAttack = this.randomNumber(12, 6);
 
 			this.player.hp += healAmount;
 			this.player.hp -= monsterAttack;
 
-			this.logs.push({
-				message: "Monster hits Player for " + monsterAttack,
-				style: "alert"});
+			this.addLog("Monster hits Player for " + monsterAttack, "alert");
+			this.addLog("Player heals for " + healAmount, "success");
 
-			this.logs.push({
-				message: "Player heals for " + healAmount,
-				style: "success"});
+			this.checkWin();
 		},
 
 		giveUp: function() {
 			this.isStarted = false;
 			this.logs = [];
+		},
+
+		randomNumber: function(max, min) {
+			return Math.max(Math.floor(Math.random() * max) + 1, min);
+		},
+
+		addLog: function(message, style) {
+			this.logs.unshift({
+				message: message,
+				style: style});
+		},
+
+		checkWin: function() {
+			if(this.monster.hp < 1) {
+				if(confirm("You won! Play again?")) {
+					this.start();
+				} else {
+					this.isStarted = false;
+				}
+
+			} else if(this.player.hp < 1) {
+				if(confirm("You lost! Play again?")) {
+					this.start();
+				} else {
+					this.isStarted = false;
+				}
+			}
 		}
 	}
 });

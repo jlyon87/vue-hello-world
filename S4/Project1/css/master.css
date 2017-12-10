@@ -77,12 +77,20 @@ button {
     background-color: #ff9a2b;
 }
 
+#special-attack:disabled {
+	background-color: #eee;
+}
+
 #heal {
     background-color: #aaffb0;
 }
 
 #heal:hover {
     background-color: #76ff7e;
+}
+
+#heal:disabled {
+	background-color: #eee;
 }
 
 #give-up {
