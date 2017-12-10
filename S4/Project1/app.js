@@ -33,28 +33,18 @@ new Vue({
 
 		attack: function() {
 			this.player.charge++;
-			var playerAttack = this.randomNumber(11, 5);
-			var monsterAttack = this.randomNumber(12, 6);
 
-			this.monster.hp -= playerAttack;
-			this.player.hp -= monsterAttack;
-
-			this.addLog("Monster hits Player for " + monsterAttack, "alert");
-			this.addLog("Player hits Monster for " + playerAttack, "primary");
+			this.playerAttack(11, 5, "hits");
+			this.monsterAttack();
 
 			this.checkWin();
 		},
 
 		specialAttack: function() {
 			this.player.charge -= 3;
-			var playerAttack = this.randomNumber(20, 12);
-			var monsterAttack = this.randomNumber(12, 6);
 
-			this.monster.hp -= playerAttack;
-			this.player.hp -= monsterAttack;
-
-			this.addLog("Monster hits Player for " + monsterAttack, "alert");
-			this.addLog("Player SMASHES Monster for " + playerAttack, "primary");
+			this.playerAttack(20, 12, "SMASHES");
+			this.monsterAttack();
 
 			this.checkWin();
 		},
@@ -68,8 +58,8 @@ new Vue({
 			this.player.hp += healAmount;
 			this.player.hp -= monsterAttack;
 
-			this.addLog("Monster hits Player for " + monsterAttack, "alert");
-			this.addLog("Player heals for " + healAmount, "success");
+			this.addLog("Player heals for " + healAmount, true);
+			this.addLog("Monster hits Player for " + monsterAttack, false);
 
 			this.checkWin();
 		},
@@ -79,18 +69,41 @@ new Vue({
 			this.logs = [];
 		},
 
+		playerAttack: function(max, min, message) {
+			var playerAttack = this.randomNumber(max, min);
+
+			this.monster.hp -= playerAttack;
+
+			this.addLog("Player " + message + " Monster for " + playerAttack, true);
+		},
+
+		monsterAttack: function() {
+			var monsterAttack = this.randomNumber(12, 6);
+
+			this.player.hp -= monsterAttack;
+
+			this.addLog("Monster hits Player for " + monsterAttack, false);
+		},
+
 		randomNumber: function(max, min) {
 			return Math.max(Math.floor(Math.random() * max) + 1, min);
 		},
 
-		addLog: function(message, style) {
+		addLog: function(message, isPlayer) {
 			this.logs.unshift({
 				message: message,
-				style: style});
+				isPlayer: isPlayer});
 		},
 
 		checkWin: function() {
-			if(this.monster.hp < 1) {
+			if(this.player.hp < 1 && this.monster.hp < 1) {
+				if(confirm("It's a draw! Play again?")) {
+					this.start();
+				} else {
+					this.isStarted = false;
+				}
+
+			} else if(this.monster.hp < 1) {
 				if(confirm("You won! Play again?")) {
 					this.start();
 				} else {

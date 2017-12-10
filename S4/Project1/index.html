@@ -29,6 +29,7 @@
 				</div>
 			</div>
 		</section>
+
 		<section class="row controls" v-if="!isStarted">
 			<div class="small-12 columns">
 				<button id="start-game"
@@ -37,6 +38,7 @@
 			</button>
 			</div>
 		</section>
+
 		<section class="row controls" v-if="isStarted">
 			<div class="small-12 columns">
 				<button id="attack"
@@ -59,17 +61,19 @@
 				</button>
 			</div>
 		</section>
+
 		<section class="row log">
 			<div class="small-12 columns">
 				<ul>
 					<li v-for="log in logs"
-						:class="{'player-turn': log.style === 'alert', 'monster-turn': log.style !== 'alert'}" >
+						:class="{'player-turn': log.isPlayer, 'monster-turn': !log.isPlayer}" >
 						{{ log.message }}
 					</li>
 				</ul>
 			</div>
 		</section>
 	</div>
+
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
 	<script type="text/javascript" src="app.js"></script>
 </body>
