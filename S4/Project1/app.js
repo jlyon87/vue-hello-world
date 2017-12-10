@@ -23,6 +23,7 @@ new Vue({
 	},
 
 	methods: {
+		// Button Functions
 		start: function() {
 			this.player.hp = 100;
 			this.player.charge = 0;
@@ -53,13 +54,10 @@ new Vue({
 			this.player.charge -= 2;
 
 			var healAmount = this.randomNumber(15, 7);
-			var monsterAttack = this.randomNumber(12, 6);
-
 			this.player.hp += healAmount;
-			this.player.hp -= monsterAttack;
-
 			this.addLog("Player heals for " + healAmount, true);
-			this.addLog("Monster hits Player for " + monsterAttack, false);
+
+			this.monsterAttack();
 
 			this.checkWin();
 		},
@@ -69,6 +67,7 @@ new Vue({
 			this.logs = [];
 		},
 
+		// Helper Functions
 		playerAttack: function(max, min, message) {
 			var playerAttack = this.randomNumber(max, min);
 
