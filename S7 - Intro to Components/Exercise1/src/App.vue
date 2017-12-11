@@ -6,8 +6,8 @@
 	<hr>
 	<div class="row">
 
-		<app-serverList></app-serverList>
-		<app-serverDetail></app-serverDetail>
+		<app-server-list></app-server-list>
+		<app-server-detail></app-server-detail>
 
 	</div>
 	<hr>
@@ -27,8 +27,8 @@ export default {
 	components: {
 		"app-header": Header,
 		"app-footer": Footer,
-		"app-serverList": ServerList,
-		"app-serverDetail": ServerDetail
+		"app-server-list": ServerList,
+		"app-server-detail": ServerDetail
 	}
 }
 </script>
