@@ -8,7 +8,7 @@
 		<div id="app" >
 			<input type="text" v-on:input="onInputKeyup" >
 			<h1>{{ title }}</h1>
-			<p>{{ spitTitle() }}</p>
+			<p>{{ spitTitle }}</p>
 			<p v-html="finishedLink"></p>
 			<div>
 				<a v-bind:href="link" target="_blank">Google</a>
@@ -32,13 +32,15 @@
 					hackerman: "https://media.giphy.com/media/QbumCX9HFFDQA/giphy-downsized-large.gif"
 				},
 
+				computed: {
+					spitTitle: function() {
+						return this.title.toLowerCase();
+					}
+				},
+
 				methods: {
 					onInputKeyup: function(event) {
 						this.title = event.target.value;
-					},
-					spitTitle: function() {
-						this.title = "Hello!";
-						return this.title;
 					}
 				}
 			});
