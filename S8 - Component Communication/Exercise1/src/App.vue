@@ -4,10 +4,12 @@
 		<hr>
 		<div class="row">
 			<app-servers
+				:servers="servers"
 				@clickedServer="server = $event"
 			></app-servers>
 			<app-server-details
 				:server="server"
+				@changedStatus="updateServer"
 			></app-server-details>
 		</div>
 		<hr>
@@ -30,8 +32,21 @@ export default {
 	},
 	data() {
 		return {
-			server: undefined
+			server: undefined,
+			servers: [
+				{id: 1, status: "Normal"},
+				{id: 2, status: "Critical"},
+				{id: 3, status: "Unknown"},
+				{id: 4, status: "Normal"},
+				{id: 5, status: "Normal"},
+			]
 		};
+	},
+	methods: {
+		updateServer(server) {
+			var changedServer = this.servers.find(x => x.id === server.id);
+			this.server.status = server.status;
+		}
 	}
 }
 </script>

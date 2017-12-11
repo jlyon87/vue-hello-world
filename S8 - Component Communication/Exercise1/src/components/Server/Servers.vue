@@ -5,7 +5,7 @@
 				class="list-group-item"
 				v-for="server in servers">
 
-				<a @click="clickServer(server)">
+				<a @click="clickServer(server)" style="cursor: pointer;">
 					Server #{{ server.id }}
 
 				</a>
@@ -16,15 +16,10 @@
 
 <script>
 export default {
-	data() {
-		return {
-			servers: [
-				{id: 1, status: "Normal"},
-				{id: 2, status: "Critical"},
-				{id: 3, status: "Unknown"},
-				{id: 4, status: "Normal"},
-				{id: 5, status: "Normal"},
-			]
+	props: {
+		servers: {
+			type: Array,
+			required: true
 		}
 	},
 	methods: {
