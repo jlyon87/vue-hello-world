@@ -1,0 +1,1 @@
+This section was primarily lecture on the Vue JS Instance.
