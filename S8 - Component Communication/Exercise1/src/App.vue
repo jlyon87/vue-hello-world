@@ -44,7 +44,6 @@ export default {
 	},
 	methods: {
 		updateServer(server) {
-			var changedServer = this.servers.find(x => x.id === server.id);
 			this.server.status = server.status;
 		}
 	}
