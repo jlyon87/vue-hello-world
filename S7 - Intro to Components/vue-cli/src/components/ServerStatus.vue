@@ -1,8 +1,8 @@
 <template >
 	<div > <!-- All components must have a div container -->
 		<button type="button" @click="changeStatus">Change Status</button>
-		<hr>
 		<p>Server Status: {{ status }}</p>
+		<hr>
 	</div>
 </template>
 
@@ -18,5 +18,5 @@ export default {
 			this.status = "Changed";
 		}
 	}
-}
+};
 </script>
