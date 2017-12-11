@@ -3,8 +3,12 @@
 		<app-header></app-header>
 		<hr>
 		<div class="row">
-			<servers></servers>
-			<app-server-details></app-server-details>
+			<app-servers
+				@clickedServer="server = $event"
+			></app-servers>
+			<app-server-details
+				:server="server"
+			></app-server-details>
 		</div>
 		<hr>
 		<app-footer></app-footer>
@@ -19,10 +23,15 @@ import ServerDetails from './components/Server/ServerDetails.vue';
 
 export default {
 	components: {
-		appHeader: Header,
-		Servers,
+		"app-header": Header,
+		"app-servers": Servers,
 		'app-server-details': ServerDetails,
 		'app-footer': Footer
+	},
+	data() {
+		return {
+			server: undefined
+		};
 	}
 }
 </script>
