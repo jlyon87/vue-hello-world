@@ -4,13 +4,15 @@
 
 			<div slot="header">
 				<app-quote-bar
-					:totalQuotes="quotes.length" ></app-quote-bar>
+					:totalQuotes="quotes.length"
+					:maxQuotes="maxQuotes" ></app-quote-bar>
 			</div>
 
 			<div class="row">
 				<div class="col-xs-12">
 					<app-add-quote
 						:totalQuotes="quotes.length"
+						:maxQuotes="maxQuotes"
 						@saveClicked="saveQuote" ></app-add-quote>
 				</div>
 
@@ -45,7 +47,8 @@ export default {
 				{id: 2, message: "quote 3"},
 				{id: 3, message: "quote 4"},
 				{id: 4, message: "quote 5"},
-			]
+			],
+			maxQuotes: 12
 		}
 	},
 

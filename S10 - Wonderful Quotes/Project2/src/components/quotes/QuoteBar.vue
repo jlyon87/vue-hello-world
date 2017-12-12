@@ -5,11 +5,11 @@
 			<div class="progress-bar"
 				role="progressbar"
 				:aria-valuenow="totalQuotes"
-				aria-valuemax="10"
+				:aria-valuemax="maxQuotes"
 				:style="progressBarWidth">
 
-				{{ totalQuotes }}/10
-				<span class="sr-only">{{ totalQuotes }}/10</span>
+				{{ totalQuotes }} / {{ maxQuotes }}
+				<span class="sr-only">{{ totalQuotes }} / {{ maxQuotes }}</span>
 			</div>
 		</div>
 	</div>
@@ -21,12 +21,16 @@ export default {
 		totalQuotes: {
 			type: Number,
 			required: true
+		},
+		maxQuotes: {
+			type: Number,
+			default: () => 10
 		}
 	},
 
 	computed: {
 		progressBarWidth() {
-			return {"width": (this.totalQuotes * 10) + '%'};
+			return {"width": (this.totalQuotes / this.maxQuotes * 100) + '%'};
 		}
 	}
 }

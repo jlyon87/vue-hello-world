@@ -7,12 +7,15 @@
 					id="quoteInput"
 					rows="5"
 					cols="80"
-					v-model="quoteText" ></textarea>
+					placeholder="Enter a quote here..."
+					v-model="quoteText"
+					@keyup.enter.prevent="saveQuote"
+					 ></textarea>
 			</div>
 			<div class="button">
 				<button class="btn btn-primary"
-					:disabled="totalQuotes > 9"
-					@click="saveQuote"
+					:disabled="totalQuotes >= maxQuotes"
+					@click.prevent="saveQuote"
 					id="saveBtn">Add Quote</button>
 			</div>
 		</form>
@@ -25,19 +28,34 @@ export default {
 		totalQuotes: {
 			type: Number,
 			required: true
+		},
+		maxQuotes: {
+			type: Number,
+			default: () => 10
 		}
 	},
 
 	data() {
 		return {
-			quoteText: "stuff"
+			quoteText: ""
 		}
 	},
 
 	methods: {
 		saveQuote(event) {
-			event.preventDefault();
-			this.$emit("saveClicked", this.quoteText);
+
+			if(this.isValidText() && this.totalQuotes < this.maxQuotes) {
+				console.log(typeof this.quoteText, this.quoteText.length)
+				this.$emit("saveClicked", this.quoteText.trim());
+				this.quoteText = "";
+
+			} else if(this.totalQuotes >= this.maxQuotes) {
+				alert("Too many quotes! Delete some to make room.");
+			}
+		},
+
+		isValidText() {
+			return !this.quoteText || this.quoteText.trim().length > 0;
 		}
 	}
 }
