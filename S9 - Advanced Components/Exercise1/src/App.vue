@@ -13,6 +13,7 @@
 				<hr>
 
 				<component :is="selectedComponent">
+					<h2 slot="title">This is the Title</h2>
 					<p>This is the content</p>
 				</component>
 
