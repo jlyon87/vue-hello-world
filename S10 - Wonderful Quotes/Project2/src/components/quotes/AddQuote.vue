@@ -45,7 +45,6 @@ export default {
 		saveQuote(event) {
 
 			if(this.isValidText() && this.totalQuotes < this.maxQuotes) {
-				console.log(typeof this.quoteText, this.quoteText.length)
 				this.$emit("saveClicked", this.quoteText.trim());
 				this.quoteText = "";
 
