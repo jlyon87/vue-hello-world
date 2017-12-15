@@ -5,12 +5,12 @@ import App from './App.vue'
 Vue.directive('highlight', {
 	bind(el, binding, vnode) {
 		let delay = 0;
-		if (binding.modifiers["delayed"]) { // modifiers
+		if(binding.modifiers["delayed"]) { // modifiers
 			delay = 3000;
 		}
 
 		setTimeout(() => {
-			if (binding.arg === "background") { // arguments
+			if(binding.arg === "background") { // arguments
 				el.style.backgroundColor = binding.value; // value
 			} else {
 				el.style.color = binding.value;
