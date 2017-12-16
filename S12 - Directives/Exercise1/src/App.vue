@@ -6,7 +6,7 @@
 			<!-- Exercise -->
 			<!-- Build a Custom Directive which works like v-on (Listen for Events) -->
 
-			<button v-my-on:click="">Custom v-on Directive</button>
+			<button v-my-on:click="doAlert">Custom v-on Directive</button>
 
 		</div>
 	</div>
@@ -18,24 +18,18 @@
 			directives: {
 				"my-on": {
 					bind(el, binding, vnode) {
-						const doAlert = () => {
-							alert("We did it");
-						};
-						el.addEventListener(binding.arg, doAlert);
+						el.addEventListener(binding.arg, binding.value);
 					},
 
 					unbind(el, binding, vnode) {
-						const doAlert = () => {
-							alert("We did it");
-						};
-						el.removeEventListener(binding.arg, doAlert);
+						el.removeEventListener(binding.arg, binding.value);
 					}
 				}
 			},
 
 			methods: {
 				doAlert() {
-
+					alert("We did it!");
 				}
 			}
 		}
