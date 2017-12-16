@@ -6,13 +6,39 @@
 			<!-- Exercise -->
 			<!-- Build a Custom Directive which works like v-on (Listen for Events) -->
 
+			<button v-my-on:click="">Custom v-on Directive</button>
+
 		</div>
 	</div>
 </div>
 </template>
 
 <script>
-		export default {}
+		export default {
+			directives: {
+				"my-on": {
+					bind(el, binding, vnode) {
+						const doAlert = () => {
+							alert("We did it");
+						};
+						el.addEventListener(binding.arg, doAlert);
+					},
+
+					unbind(el, binding, vnode) {
+						const doAlert = () => {
+							alert("We did it");
+						};
+						el.removeEventListener(binding.arg, doAlert);
+					}
+				}
+			},
+
+			methods: {
+				doAlert() {
+
+				}
+			}
+		}
 </script>
 
 <style>
