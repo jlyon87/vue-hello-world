@@ -14,30 +14,56 @@
 				</div>
 
 				<button class="btn btn-primary" @click.prevent="submit">Submit</button>
+				<hr>
+				<button class="btn btn-primary" @click.prevent="fetchData">Get Data</button>
+				<br><br>
+				<ul class="list-group">
+					<li class="list-group-item" v-for="u in users">
+						{{ u.name }}
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+const FIREBASE_URL = "";
 export default {
 	data() {
 		return {
 			user: {
 				name: "",
 				email: ""
-			}
+			},
+			users: []
 		}
 	},
 
 	methods: {
 		submit() {
 			console.log("User", this.user);
-			this.$http.post("https://vue-resource-d0456.firebaseio.com/users.json", this.user)
+			this.$http.post(FIREBASE_URL, this.user)
 				.then(res => {
 					console.log(res)
 				}, err => {
 					console.error(err);
+				});
+		},
+
+		fetchData() {
+			this.$http.get(FIREBASE_URL)
+				.then(res => {
+					return res.json();
+				})
+				.then(data => {
+					console.log("data", data);
+					const resultArray = [];
+					for(let key in data) {
+						resultArray.push(data[key]);
+					}
+					console.log("resultArray", resultArray);
+					this.users = resultArray;
 				});
 		}
 	}
