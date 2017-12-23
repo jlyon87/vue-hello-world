@@ -1,7 +1,7 @@
 <template>
-<v-container fluid grid-list-lg>
-<v-layout row wrap>
-  <v-flex v-if="stocks.length > 0" v-for="stock in stocks" :key="stock.name" >
+<v-container grid-list-lg>
+<v-layout row wrap justify-center>
+  <v-flex xs12 sm3 v-if="stocks.length > 0" v-for="stock in stocks" :key="stock.name" >
     <app-stock :stock="stock" ></app-stock>
   </v-flex>
 
