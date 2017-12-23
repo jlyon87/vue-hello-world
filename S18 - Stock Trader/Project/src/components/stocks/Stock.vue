@@ -1,3 +1,27 @@
 <template>
-  <h1>The stocks/stock Component</h1>
+  <v-card class="text-xs-center">
+    <v-card-title>{{ stock.name }}</v-card-title>
+    <v-card-text>Price: ({{ stock.price }})</v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn flat color="green" @click="buyStock" >Buy</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
+
+<script>
+export default {
+  props: {
+    stock: {
+      type: Object,
+      required: true
+    }
+  },
+  methods: {
+    buyStock() {
+      console.log("Buying: ", this.stock);
+    }
+  }
+}
+</script>
+
