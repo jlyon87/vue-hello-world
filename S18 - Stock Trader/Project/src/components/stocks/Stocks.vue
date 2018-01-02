@@ -1,7 +1,7 @@
 <template>
 <v-container grid-list-lg>
 <v-layout row wrap justify-center>
-  <v-flex xs12 sm3 v-for="stock in stocks" :key="stock.name" >
+  <v-flex xs12 sm3 v-for="stock in getStocks" :key="stock.name" >
     <app-stock :stock="stock" ></app-stock>
   </v-flex>
 </v-layout>
@@ -9,19 +9,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import * as types from "../../store/types";
+
 import Stock from "./Stock.vue";
 
 export default {
-  data() {
-    return {
-      stocks: [
-        { name: "BMW", price: 110 },
-        { name: "Google", price: 200 },
-        { name: "Apple", price: 250 },
-        { name: "Twitter", price: 8 },
-      ]
-    };
-  },
+	computed: {
+		...mapGetters({
+			getStocks: types.GET_PUBLIC_STOCKS
+		})
+	},
+
   components: {
     appStock: Stock
   }

@@ -10,6 +10,9 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import * as types from "../../store/types";
+
 export default {
   props: {
     stock: {
@@ -17,11 +20,30 @@ export default {
       required: true
     }
   },
-  methods: {
-    buyStock() {
-      console.log("Buying: ", this.stock);
-    }
-  }
+
+	computed: {
+		...mapGetters({
+			getFunds: types.GET_FUNDS
+		})
+	},
+
+	methods: {
+		...mapActions({
+			decrement: types.DECREMENT_FUNDS,
+			addStock: types.ADD_PORTFOLIO_STOCK
+		}),
+
+		buyStock() {
+			console.log("Buying: ", this.stock);
+			if(this.getFunds >= this.stock.price) {
+				this.addStock(this.stock);
+				this.decrement(this.stock.price);
+
+			} else {
+				alert("Insufficient funds.");
+			}
+		}
+	}
 }
 </script>
 

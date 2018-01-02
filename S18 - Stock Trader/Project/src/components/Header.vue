@@ -34,11 +34,16 @@
     </v-menu>
   </v-toolbar-items>
 
-  <v-toolbar-title>Funds: $100.00</v-toolbar-title>
+  <v-toolbar-title>
+		Funds: {{ fundsToString }}
+	</v-toolbar-title>
 </v-toolbar>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import * as types from "../store/types";
+
 export default {
   data() {
     return {
@@ -48,6 +53,12 @@ export default {
       ]
     };
   },
+
+	computed: {
+		...mapGetters({
+			fundsToString: types.FUNDS_TOSTRING
+		})
+	},
 
   methods: {
     endDay() {

@@ -10,6 +10,9 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import * as types from "../../store/types";
+
 export default {
   props: {
     stock: {
@@ -18,10 +21,17 @@ export default {
     }
   },
   methods: {
-    sellStock() {
-      console.log("Sell: ", this.stock);
-    }
-  }
+		...mapActions({
+			increment: types.INCREMENT_FUNDS,
+			removeStock: types.REMOVE_PORTFOLIO_STOCK
+		}),
+
+		sellStock() {
+			console.log("Sell: ", this.stock);
+
+			this.increment(this.stock.price);
+			this.removeStock(this.stock.id);
+		}
+	}
 }
 </script>
-

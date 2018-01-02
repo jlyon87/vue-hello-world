@@ -14,8 +14,11 @@ const router = new VueRouter({
   mode: "history"
 });
 
+import { store } from "./store/store";
+
 new Vue({
   el: '#app',
-  router,
+	router,
+	store,
   render: h => h(App)
 });

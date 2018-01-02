@@ -8,8 +8,22 @@
         <p>You may Save & Load your Data</p>
         <p>Click on 'End Day' to begin a new Day!</p>
         <hr>
-        <strong>Your Funds: $100.00</strong>
+        <strong>Your Funds: {{ fundsToString }}</strong>
       </v-card-text>
     </v-card>
   </v-container>
 </template>
+
+<script>
+import { mapGetters } from "vuex";
+import * as types from "../store/types";
+
+export default {
+	computed: {
+		...mapGetters({
+			fundsToString: types.FUNDS_TOSTRING
+		})
+	}
+}
+</script>
+
