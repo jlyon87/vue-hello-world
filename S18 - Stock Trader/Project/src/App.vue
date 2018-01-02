@@ -2,8 +2,11 @@
 <v-app dark>
   <v-content>
     <app-header></app-header>
-    
-    <router-view></router-view>
+
+		<transition name="slide-y-reverse-transition" mode="out-in">
+			<router-view ></router-view>
+		</transition>
+
   </v-content>
 </v-app>
 </template>

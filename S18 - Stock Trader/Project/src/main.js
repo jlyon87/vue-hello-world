@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuetify from "vuetify";
-//import('../node_modules/vuetify/dist/vuetify.min.css');
+import '../node_modules/vuetify/dist/vuetify.min.css';
 
 import VueRouter from "vue-router";
 import { routes } from "./routes";
@@ -18,4 +18,4 @@ new Vue({
   el: '#app',
   router,
   render: h => h(App)
-})
+});

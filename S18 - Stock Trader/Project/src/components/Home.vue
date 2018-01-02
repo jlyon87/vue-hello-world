@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container >
     <v-card>
       <v-card-title>
         <h1>Trade or View your Portfolio</h1>
