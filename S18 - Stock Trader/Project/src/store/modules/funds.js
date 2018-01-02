@@ -1,7 +1,7 @@
 import * as types from "../types";
 
 const state = {
-	funds: 100
+	funds: 1000
 };
 
 const getters = {
@@ -14,22 +14,15 @@ const getters = {
 };
 
 const mutations = {
-	increment(state, stockPrice) {
+	[types.INCREMENT_FUNDS](state, stockPrice) {
 		state.funds += stockPrice;
 	},
-	decrement(state, stockPrice) {
+	[types.DECREMENT_FUNDS](state, stockPrice) {
 		state.funds -= stockPrice;
 	}
 };
 
-const actions = {
-	[types.INCREMENT_FUNDS]({ commit }, stockPrice) {
-		commit("increment", stockPrice);
-	},
-	[types.DECREMENT_FUNDS]({ commit }, stockPrice) {
-		commit("decrement", stockPrice);
-	}
-};
+const actions = {};
 
 export default {
 	state,
