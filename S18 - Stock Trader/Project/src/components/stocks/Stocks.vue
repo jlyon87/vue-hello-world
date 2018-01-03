@@ -1,9 +1,9 @@
 <template>
 <v-container grid-list-lg>
 <v-layout row wrap justify-center>
-  <v-flex xs12 sm3 v-for="stock in getStocks" :key="stock.name" >
-    <app-stock :stock="stock" ></app-stock>
-  </v-flex>
+	<v-flex xs12 sm3 v-for="stock in getStocks" :key="stock.name" >
+		<app-stock :stock="stock" ></app-stock>
+	</v-flex>
 </v-layout>
 </v-container>
 </template>
@@ -21,8 +21,8 @@ export default {
 		})
 	},
 
-  components: {
-    appStock: Stock
-  }
+	components: {
+		appStock: Stock
+	},
 }
 </script>

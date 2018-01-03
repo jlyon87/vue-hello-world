@@ -1,12 +1,8 @@
 import * as types from "../types";
+import stocks from "../../data/stocks";
 
 const state = {
-	stocks: [
-		{ name: "BMW", price: 10, id: 1, quantity: 100 },
-		{ name: "Google", price: 15, id: 2, quantity: 80 },
-		{ name: "Apple", price: 25, id: 3, quantity: 200 },
-		{ name: "Twitter", price: 5, id: 4, quantity: 50 },
-	]
+	stocks: []
 };
 
 const getters = {
@@ -16,6 +12,10 @@ const getters = {
 };
 
 const mutations = {
+	[types.SET_PUBLIC_STOCKS](state, stocks) {
+		state.stocks = stocks;
+	},
+
 	[types.ADD_PUBLIC_STOCK](state, stock) {
 		state.stocks.push(stock);
 	},
@@ -36,7 +36,11 @@ const mutations = {
 	}
 };
 
-const actions = {};
+const actions = {
+	[types.LOAD_PUBLIC_STOCKS]({ commit }) {
+		commit(types.SET_PUBLIC_STOCKS, stocks);
+	}
+};
 
 export default {
 	state,
