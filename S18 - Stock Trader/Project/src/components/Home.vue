@@ -8,7 +8,7 @@
         <p>You may Save & Load your Data</p>
         <p>Click on 'End Day' to begin a new Day!</p>
         <hr>
-        <strong>Your Funds: {{ fundsToString }}</strong>
+        <strong>Your Funds: {{ funds }}</strong>
       </v-card-text>
     </v-card>
   </v-container>
@@ -20,9 +20,9 @@ import * as types from "../store/types";
 
 export default {
 	computed: {
-		...mapGetters({
-			fundsToString: types.FUNDS_TOSTRING
-		})
+		funds() {
+			return this.$store.getters.formattedFunds;
+		}
 	}
 }
 </script>

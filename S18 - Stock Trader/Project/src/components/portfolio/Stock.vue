@@ -10,25 +10,25 @@
 				label="Quantity"
 				type="number"
 				required
-				:rules="[() => quantity <= stock.quantity && quantity > 0 || 'Invalid entry.']"
+				:rules="[
+					() => quantity <= stock.quantity || 'You may not sell more than you have.',
+					() => quantity >= 0 || 'Quantity must be greater than zero.']"
 				v-model.number="quantity"
 				ref="quantity" ></v-text-field>
 
-			<v-btn flat color="red" @click="sellStock" >Sell</v-btn>
+			<v-btn flat color="red"
+				@click="submitSell"
+				:disabled="quantity === '' || quantity > stock.quantity" >Sell</v-btn>
 		</v-card-actions>
 	</v-card>
 </template>
 
 <script>
-import { mapMutations } from "vuex";
-import * as types from "../../store/types";
-
+import { mapActions } from "vuex"; // overkill
 export default {
 	data() {
 		return {
-			quantity: {
-				type: Number
-			}
+			quantity: 0
 		};
 	},
 
@@ -39,47 +39,26 @@ export default {
 		}
 	},
 
+	computed: {
+
+	},
+
 	methods: {
-		...mapMutations({
-			increment: types.INCREMENT_FUNDS,
-			incrementPublicStockQty: types.INCREMENT_PUBLIC_STOCK_QTY,
-			decrementPortfolioStockQty: types.DECREMENT_PORTFOLIO_STOCK_QTY,
-			removePortfolioStock: types.REMOVE_PORTFOLIO_STOCK,
-			addPublicStock: types.ADD_PUBLIC_STOCK
-		}),
+		...mapActions([
+			"sellStock",
+			"increment"
+		]),
 
-		sellStock() {
-			const profit = this.stock.price * this.quantity;
-
-			const payload = {};
-			payload.quantity = this.quantity;
-			payload.stockId = this.stock.id;
-
-			if(this.quantity <= this.stock.quantity) {
-				this.increment(profit);
-
-				const hasPublicStock = this.$store.state.publicStocks.stocks.findIndex(stock => stock.id === this.stock.id) !== -1;
-
-				if(hasPublicStock) {
-
-					this.incrementPublicStockQty(payload);
-				} else {
-
-					const newStock = Object.assign({}, this.stock);
-					newStock.quantity = this.quantity;
-					this.addPublicStock(newStock);
-				}
-
-				this.decrementPortfolioStockQty(payload);
-
-				if(this.stock.quantity === 0) {
-					this.removePortfolioStock(this.stock.id);
-				}
-
-			} else {
-
-				alert("You cannot sell more than you have.");
+		submitSell() {
+			const order = {
+				stockId: this.stock.id,
+				quantity: this.quantity,
+				price: this.stock.price
 			}
+
+			this.sellStock(order);
+			this.increment(order.quantity * order.price);
+			this.quantity = 0;
 		}
 	}
 }

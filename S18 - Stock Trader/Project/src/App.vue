@@ -12,8 +12,6 @@
 </template>
 
 <script>
-import * as types from "./store/types";
-
 import Header from "./components/Header.vue";
 
 export default {
@@ -22,7 +20,7 @@ export default {
 	},
 
 	created() {
-		this.$store.dispatch(types.LOAD_PUBLIC_STOCKS);
+		this.$store.dispatch("loadStocks");
 	}
 }
 </script>

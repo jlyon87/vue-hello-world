@@ -1,28 +1,42 @@
-import * as types from "../types";
+import { dataAccess } from "../../data/stockDataApi";
 
 const state = {
 	funds: 1000
 };
 
 const getters = {
-	[types.GET_FUNDS]() {
+	funds(state) {
 		return state.funds;
 	},
-	[types.FUNDS_TOSTRING]() {
+
+	formattedFunds(state) {
 		return "$" + state.funds.toFixed(2);
 	}
 };
 
 const mutations = {
-	[types.INCREMENT_FUNDS](state, stockPrice) {
-		state.funds += stockPrice;
-	},
-	[types.DECREMENT_FUNDS](state, stockPrice) {
-		state.funds -= stockPrice;
+	"SET_FUNDS"(state, amount) {
+		if(amount) {
+			state.funds = amount;
+		}
 	}
 };
 
-const actions = {};
+const actions = {
+	increment({ commit }, amount) {
+		commit("SET_FUNDS", state.funds + amount);
+	},
+
+	decrement({ commit }, amount) {
+		commit("SET_FUNDS", state.funds - amount);
+	},
+
+	loadFunds({ commit }) {
+		dataAccess.fetchData()
+			.then(response => commit("SET_FUNDS", response.data.funds))
+			.catch(error => console.error("Error retrieving funds data: ", error.message));
+	}
+};
 
 export default {
 	state,

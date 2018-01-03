@@ -1,37 +1,71 @@
-import * as types from "../types";
+import { dataAccess } from "../../data/stockDataApi";
 
 const state = {
 	stocks: []
 };
 
 const getters = {
-	[types.GET_PORTFOLIO_STOCKS]() {
+	portfolio(state) {
 		return state.stocks;
+	},
+
+	stockPortfolio(state, getters) {
+		return state.stocks.map(stock => {
+			const record = getters.stocks.find(row => row.id === stock.id);
+			return {
+				name: record.name,
+				id: record.id,
+				quantity: stock.quantity,
+				price: record.price
+			}
+		});
 	},
 };
 
 const mutations = {
-	[types.ADD_PORTFOLIO_STOCK](state, stock) {
-		state.stocks.push(stock);
+	"SET_PORTFOLIO"(state, portfolio) {
+		if(portfolio) {
+			state.stocks = portfolio;
+		}
 	},
 
-	[types.REMOVE_PORTFOLIO_STOCK](state, stockId) {
-		const index = state.stocks.findIndex(stock => stock.id === stockId);
-		state.stocks.splice(index, 1);
+	"BUY_STOCK"(state, { stockId, quantity }) {
+		// if has record, increment qty
+		// else create new record
+		const record = state.stocks.find(stock => stock.id === stockId);
+		if(record) {
+			record.quantity += quantity;
+		} else {
+			state.stocks.push({
+				id: stockId,
+				quantity: quantity
+			});
+		}
 	},
 
-	[types.INCREMENT_PORTFOLIO_STOCK_QTY](state, payload) {
-		const stock = state.stocks.find(stock => stock.id === payload.stockId);
-		stock.quantity = Number(stock.quantity) + Number(payload.quantity);
+	"SELL_STOCK"(state, { stockId, quantity }) {
+		// if qty is still > 0, decrement
+		// else remove record
+		const record = state.stocks.find(stock => stock.id === stockId);
+		if(record.quantity > quantity) {
+			record.quantity -= quantity;
+		} else {
+			state.stocks.splice(state.stocks.indexOf(record), 1);
+		}
 	},
-
-	[types.DECREMENT_PORTFOLIO_STOCK_QTY](state, payload) {
-		const stock = state.stocks.find(stock => stock.id === payload.stockId);
-		stock.quantity = Number(stock.quantity) - Number(payload.quantity);
-	}
 };
 
-const actions = {};
+const actions = {
+	sellStock({ commit }, order) {
+		commit("SELL_STOCK", order);
+	},
+
+	loadPortfolio({ commit }) {
+		dataAccess.fetchData()
+			.then(response => commit("SET_PORTFOLIO", response.data.portfolio))
+			.catch(error => console.error("Error loading portfolio data: ", error.message));
+	}
+};
 
 export default {
 	state,

@@ -2,7 +2,6 @@
 	<v-card class="text-xs-center">
 		<v-card-title>{{ stock.name }}</v-card-title>
 		<v-card-text>
-			<p>Quantity: {{ stock.quantity }}</p>
 			<p>Price: {{ stock.price }}</p>
 		</v-card-text>
 		<v-card-actions>
@@ -10,25 +9,24 @@
 				label="Quantity"
 				type="number"
 				required
-				:rules="[() => quantity <= stock.quantity && quantity > 0 || 'Invalid entry.']"
+				:rules="[
+					() => quantity >= 0 || 'Quantity must be greater than zero.',
+					() => !insufficientFunds || 'Insufficient funds.']"
 				v-model.number="quantity"
 				ref="quantity" ></v-text-field>
 
-			<v-btn flat color="green" @click="buyStock" >Buy</v-btn>
+			<v-btn flat color="green"
+				@click="buyStock"
+				:disabled="quantity === '' || quantity * stock.price > funds" >Buy</v-btn>
 		</v-card-actions>
 	</v-card>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
-import * as types from "../../store/types";
-
 export default {
 	data() {
 		return {
-			quantity: {
-				type: Number
-			}
+			quantity: 0
 		};
 	},
 
@@ -40,49 +38,26 @@ export default {
 	},
 
 	computed: {
-		...mapGetters({
-			getFunds: types.GET_FUNDS
-		})
+		funds() {
+			return this.$store.getters.funds;
+		},
+
+		insufficientFunds() {
+			return this.funds < this.quantity * this.stock.price;
+		}
 	},
 
 	methods: {
-		...mapMutations({
-			decrementFunds: types.DECREMENT_FUNDS,
-			incrementPortfolioStockQty: types.INCREMENT_PORTFOLIO_STOCK_QTY,
-			decrementPublicStockQty: types.DECREMENT_PUBLIC_STOCK_QTY,
-			addPortfolioStock: types.ADD_PORTFOLIO_STOCK,
-			removePublicStock: types.REMOVE_PUBLIC_STOCK
-		}),
-
 		buyStock() {
-			const cost = this.stock.price * this.quantity;
-			if(this.getFunds >= cost && this.quantity <= this.stock.quantity) {
-				this.decrementFunds(cost);
+			const order = {
+				stockId: this.stock.id,
+				quantity: this.quantity,
+				price: this.stock.price
+			};
 
-				const payload = {};
-				payload.quantity = this.quantity;
-				payload.stockId = this.stock.id;
-
-				const hasPortfolioStock = (this.$store.state.portfolio.stocks.findIndex(stock => stock.id === this.stock.id)) !== -1;
-				if(hasPortfolioStock) {
-
-					this.incrementPortfolioStockQty(payload);
-
-				} else {
-					const newStock = Object.assign({}, this.stock);
-					newStock.quantity = this.quantity;
-					this.addPortfolioStock(newStock);
-				}
-
-				this.decrementPublicStockQty(payload);
-
-				if(this.stock.quantity === 0) {
-					this.removePublicStock(this.stock.id);
-				}
-
-			} else {
-				alert("Insufficient funds.");
-			}
+			this.$store.dispatch("buyStock", order);
+			this.$store.dispatch("decrement", order.quantity * order.price);
+			this.quantity = 0;
 		}
 	}
 }
