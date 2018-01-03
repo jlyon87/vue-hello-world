@@ -1,14 +1,17 @@
 <template>
 	<v-card class="text-xs-center">
 		<v-card-title>{{ stock.name }} ({{ stock.quantity }})</v-card-title>
-		<v-card-text>Price: ({{ stock.price }})</v-card-text>
+		<v-card-text>
+			<p>Quantity: {{ stock.quantity }}</p>
+			<p>Price: {{ stock.price }}</p>
+		</v-card-text>
 		<v-card-actions>
 			<v-text-field
 				label="Quantity"
 				type="number"
 				required
 				:rules="[() => quantity <= stock.quantity && quantity > 0 || 'Invalid entry.']"
-				v-model="quantity"
+				v-model.number="quantity"
 				ref="quantity" ></v-text-field>
 
 			<v-btn flat color="red" @click="sellStock" >Sell</v-btn>
