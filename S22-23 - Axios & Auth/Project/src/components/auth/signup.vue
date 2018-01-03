@@ -105,7 +105,12 @@ export default {
 				terms: this.terms
 			}
 			console.log(formData);
-			axios.post("/users.json", formData)
+
+			axios.post("/signupNewUser?key=AIzaSyB6DEBF2oFZEpwampKJNRqI-Xk2GljM60M", {
+				email: formData.email,
+				password: formData.password,
+				returnSecureToken: true
+			})
 				.then(response => console.log(response))
 				.catch(error => console.error("Error sending signup request: ", error.message));
 		}

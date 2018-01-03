@@ -8,8 +8,8 @@ import store from './store'
 
 // axios Global defaults
 axios.defaults.baseURL = "https://vue-axios-c0384.firebaseio.com";
-axios.defaults.headers.common['Authorization'] = "boogers";
-axios.defaults.headers.get['Accept'] = "application/json";
+// axios.defaults.headers.common['Authorization'] = "boogers";
+// axios.defaults.headers.get['Accept'] = "application/json";
 
 // Create an interceptor
 const requestInterceptor = axios.interceptors.request.use(req => {
@@ -26,8 +26,8 @@ const responseInterceptor = axios.interceptors.response.use(res => {
 //axios.interceptors.response.eject(responseInterceptor);
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
+	el: '#app',
+	router,
+	store,
+	render: h => h(App)
 })
