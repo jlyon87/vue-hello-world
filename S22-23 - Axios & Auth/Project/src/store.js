@@ -32,6 +32,12 @@ export default new Vuex.Store({
 	},
 
 	actions: {
+		setLogoutTimer({ dispatch }, expirationTime) {
+			setTimeout(() => {
+				dispatch("logout");
+			}, expirationTime * 1000)
+		},
+
 		signup({ commit, dispatch }, authData) {
 			axios.post("/signupNewUser?key=AIzaSyB6DEBF2oFZEpwampKJNRqI-Xk2GljM60M", {
 				email: authData.email,
@@ -45,6 +51,7 @@ export default new Vuex.Store({
 						userId: response.data.localId
 					});
 					dispatch("storeUser", authData);
+					dispatch("setLogoutTimer", response.data.expiresIn);
 					router.replace("/dashboard");
 				})
 				.catch(error => console.error("Error sending signup request: ", error.message));
@@ -62,7 +69,8 @@ export default new Vuex.Store({
 						token: response.data.idToken,
 						userId: response.data.localId
 					});
-					dispatch("storeUser", authData);
+
+					dispatch("setLogoutTimer", response.data.expiresIn);
 					router.replace("/dashboard");
 				})
 				.catch(error => console.error("Error sending signup request: ", error.message));
