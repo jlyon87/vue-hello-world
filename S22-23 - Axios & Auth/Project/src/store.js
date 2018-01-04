@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import router from "./router";
+
 import axios from "./axios-auth";
 import globalAxios from "axios";
 
@@ -12,6 +14,7 @@ export default new Vuex.Store({
 		userId: null,
 		user: null
 	},
+
 	mutations: {
 		authUser(state, userData) {
 			state.idToken = userData.token;
@@ -19,8 +22,15 @@ export default new Vuex.Store({
 		},
 		storeUser(state, user) {
 			state.user = user;
+		},
+
+		clearAuthData(state) {
+			state.idToken = null;
+			state.userId = null;
+			state.user = null;
 		}
 	},
+
 	actions: {
 		signup({ commit, dispatch }, authData) {
 			axios.post("/signupNewUser?key=AIzaSyB6DEBF2oFZEpwampKJNRqI-Xk2GljM60M", {
@@ -35,6 +45,7 @@ export default new Vuex.Store({
 						userId: response.data.localId
 					});
 					dispatch("storeUser", authData);
+					router.replace("/dashboard");
 				})
 				.catch(error => console.error("Error sending signup request: ", error.message));
 		},
@@ -52,8 +63,14 @@ export default new Vuex.Store({
 						userId: response.data.localId
 					});
 					dispatch("storeUser", authData);
+					router.replace("/dashboard");
 				})
 				.catch(error => console.error("Error sending signup request: ", error.message));
+		},
+
+		logout({ commit }) {
+			commit("clearAuthData");
+			router.replace("/signin");
 		},
 
 		storeUser({ commit, state }, userData) {
@@ -87,9 +104,14 @@ export default new Vuex.Store({
 				.catch(error => console.error("Error sending signup request: ", error.message));
 		}
 	},
+
 	getters: {
 		user(state) {
 			return state.user;
+		},
+
+		isAuthenticated(state) {
+			return state.idToken !== null;
 		}
 	}
 });
