@@ -20,6 +20,7 @@ export default new Vuex.Store({
 			state.idToken = userData.token;
 			state.userId = userData.userId;
 		},
+
 		storeUser(state, user) {
 			state.user = user;
 		},
@@ -48,6 +49,7 @@ export default new Vuex.Store({
 			const userId = localStorage.getItem("userId");
 
 			commit("authUser", {token, userId});
+			router.replace("/dashboard");
 		},
 
 		setLogoutTimer({ dispatch }, expirationTime) {
@@ -76,7 +78,7 @@ export default new Vuex.Store({
 					localStorage.setItem("userId", response.data.localId);
 
 					dispatch("storeUser", authData);
-					dispatch("setLogoutTimer", res.data.expiresIn);
+					dispatch("setLogoutTimer", response.data.expiresIn);
 					router.replace("/dashboard");
 				})
 				.catch(error => console.error("Error sending signup request: ", error.message));
