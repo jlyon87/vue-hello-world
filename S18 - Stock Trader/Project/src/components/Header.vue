@@ -18,10 +18,19 @@
 			to="/stocks"
 			exact>
 		Stocks</v-btn>
+
+
 	</v-toolbar-items>
 
 	<v-spacer></v-spacer>
+	<v-btn flat>
+		<v-switch
+			:label="theme"
+			v-model="isDark" ></v-switch>
+	</v-btn>
+	<v-spacer></v-spacer>
 	<v-toolbar-items>
+
 		<v-btn flat @click="endDay">End Day</v-btn>
 
 		<v-menu >
@@ -46,6 +55,7 @@ import { dataAccess } from "../data/stockDataApi";
 export default {
 	data() {
 		return {
+			isDark: false,
 			saveLoadOptions: [
 				{title: "Save Data", callback: () => { this.saveData(); } },
 				{title: "Load Data", callback: () => { this.loadData(); } }
@@ -54,12 +64,24 @@ export default {
 	},
 
 	computed: {
+		theme() {
+			return this.isDark ? "Light" : "Dark";
+		},
 		funds() {
 			return this.$store.getters.formattedFunds;
 		}
 	},
 
+	watch: {
+		isDark() {
+			this.$emit("themeChanged", this.isDark);
+		}
+	},
+
 	methods: {
+		toggleTheme() {
+
+		},
 		endDay() {
 			this.$store.dispatch("randomizeStocks");
 		},

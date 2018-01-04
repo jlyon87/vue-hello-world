@@ -1,7 +1,7 @@
 <template>
-<v-app >
+<v-app :dark="isDark">
 	<v-content>
-		<app-header></app-header>
+		<app-header @themeChanged="isDark = $event"></app-header>
 
 		<transition name="slide-y-reverse-transition" mode="out-in">
 			<router-view ></router-view>
@@ -15,6 +15,12 @@
 import Header from "./components/Header.vue";
 
 export default {
+	data() {
+		return {
+			isDark: false
+		};
+	},
+
 	components: {
 		appHeader: Header
 	},
